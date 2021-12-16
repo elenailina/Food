@@ -235,16 +235,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(form);
 
-            // const obj = {};
-            // formData.forEach(function(value, key){
-            //     obj[key] = value;
-            // });
-
-            // const json = JSON.stringify(obj);
+            const obj = {};
+            formData.forEach(function(value, key){
+                obj[key] = value;
+            });
             
             fetch('server.php', {
                 method: "POST",
-                body: formData
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(obj)
             }).then(data => data.text())
             .then(data => {
                 console.log(data);
@@ -255,8 +256,6 @@ window.addEventListener('DOMContentLoaded', () => {
             }).finally(() => {
                 form.reset();
             });
-
-            // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         });
     }
 
