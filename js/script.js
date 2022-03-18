@@ -1,3 +1,5 @@
+// const { defaults } = require("json-server");
+
 window.addEventListener('DOMContentLoaded', () => {
     // Tabs
     const tabs = document.querySelectorAll('.tabheader__item'),
@@ -331,23 +333,25 @@ window.addEventListener('DOMContentLoaded', () => {
     // });
 
     // Slider Carousel
-    const slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-          slidesField = document.querySelector('.offer__slider-inner'),
-          slides = document.querySelectorAll('.offer__slide'),
-          prev = document.querySelector('.offer__slider-prev'),
-          next = document.querySelector('.offer__slider-next'),
-          current = document.querySelector('#current'),
-          total = document.querySelector('#total'),
+    const slider = document.querySelector('.offer__slider'),
+          slidesWrapper = slider.querySelector('.offer__slider-wrapper'),
+          slidesField = slider.querySelector('.offer__slider-inner'),
+          slides = slider.querySelectorAll('.offer__slide'),
+          prev = slider.querySelector('.offer__slider-prev'),
+          next = slider.querySelector('.offer__slider-next'),
+          current = slider.querySelector('#current'),
+          total = slider.querySelector('#total'),
           width = window.getComputedStyle(slidesWrapper).width;
+
     let slideIndex = 1,
         offset = 0;
 
         if (slides.length < 10) {
             total.textContent = `0${slides.length}`;
-            current.textContent = `0${slideIndex}`;
+            addZeroToCurrent();
         } else {
             total.textContent = slides.length; 
-            current.textContent = slideIndex; 
+            addZeroToCurrent(); 
         }
 
     slidesField.style.width = 100 * slides.length + '%';
@@ -360,6 +364,39 @@ window.addEventListener('DOMContentLoaded', () => {
     slides.forEach(slide => {
         slide.style.width = width;
     });
+
+    const indicators = document.createElement('ol'),
+          dots = [];
+
+    indicators.classList.add('carousel-indicators');
+    slider.append(indicators);
+
+    for( let i = 0; i < slides.length; i++) {
+        const dot = document.createElement('li');
+
+        dot.setAttribute('data-slide-to', i + 1);
+        dot.classList.add('dot');
+
+        if ( i === 0) {
+            dot.style.opacity = 1;
+        }
+
+        indicators.append(dot);
+        dots.push(dot);
+    }
+
+    function opacityDots() {
+        dots.forEach(dot => dot.style.opacity = '.5');
+        dots[slideIndex - 1].style.opacity = 1;
+    }
+
+    function addZeroToCurrent() {
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex; 
+        }
+    }
 
     next.addEventListener('click', () => {
         if (offset == (+width.slice(0, width.length - 2) * (slides.length - 1))) {
@@ -374,13 +411,11 @@ window.addEventListener('DOMContentLoaded', () => {
             slideIndex ++;
         }
 
-        if (slides.length < 10) {
-            current.textContent = `0${slideIndex}`;
-        } else {
-            current.textContent = slideIndex; 
-        }
+        addZeroToCurrent();
 
         slidesField.style.transform = `translateX(-${offset}px)`;
+
+        opacityDots();
     });
 
     prev.addEventListener('click', () => {
@@ -397,12 +432,23 @@ window.addEventListener('DOMContentLoaded', () => {
             slideIndex --;
         }
 
-        if (slides.length < 10) {
-            current.textContent = `0${slideIndex}`;
-        } else {
-            current.textContent = slideIndex; 
-        }
+        addZeroToCurrent();
 
         slidesField.style.transform = `translateX(-${offset}px)`;
+        opacityDots();
     });
+
+    dots.forEach( dot => {
+        dot.addEventListener('click', (e) => {
+            const slideTo = e.target.getAttribute('data-slide-to');
+            slideIndex = slideTo;
+
+            offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+            
+            slidesField.style.transform = `translateX(-${offset}px)`;
+            addZeroToCurrent();
+            opacityDots();
+        });
+    });
+
 });
