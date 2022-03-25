@@ -1,13 +1,13 @@
-function slider() {
+function slider({container, slide, nextArrow, prevArrow, totalCounter, currentCounter, wrapper, field}) {
     // Slider Carousel
-    const slider = document.querySelector('.offer__slider'),
-          slidesWrapper = slider.querySelector('.offer__slider-wrapper'),
-          slidesField = slider.querySelector('.offer__slider-inner'),
-          slides = slider.querySelectorAll('.offer__slide'),
-          prev = slider.querySelector('.offer__slider-prev'),
-          next = slider.querySelector('.offer__slider-next'),
-          current = slider.querySelector('#current'),
-          total = slider.querySelector('#total'),
+    const slider = document.querySelector(container),
+          slidesWrapper = slider.querySelector(wrapper),
+          slidesField = slider.querySelector(field),
+          slides = slider.querySelectorAll(slide),
+          prev = slider.querySelector(prevArrow),
+          next = slider.querySelector(nextArrow),
+          current = slider.querySelector(currentCounter),
+          total = slider.querySelector(totalCounter),
           width = window.getComputedStyle(slidesWrapper).width;
 
     let slideIndex = 1,
@@ -122,4 +122,4 @@ function slider() {
         });
     });
 }
-module.exports = slider;
+export default slider;
