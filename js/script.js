@@ -1,3 +1,5 @@
+require('es6-promise').polyfill();
+
 import tabs from './modules/tabs';
 import calc from './modules/calc';
 import cards from './modules/cards';
@@ -10,7 +12,7 @@ import {openModal} from './modules/modal';
 window.addEventListener('DOMContentLoaded', () => {
     const modalTimerId = setTimeout(() => openModal('.modal', modalTimerId), 5000);
           
-    tabs('.tabheader__item', '.tabcontent', '.tabheader__items', 'tabheader__item_active'.slice(1), 'tabheader__item');
+    tabs('.tabheader__item', '.tabcontent', '.tabheader__items', 'tabheader__item_active', 'tabheader__item');
     calc();
     cards();
     forms('form', modalTimerId);

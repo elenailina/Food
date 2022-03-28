@@ -11,7 +11,7 @@ function openModal (modalSelector, modalTimerId) {
 }
 
 
-function closeModal (modalSelector) {
+function closeModal(modalSelector) {
     const modal = document.querySelector(modalSelector);
     
     modal.classList.add('hide');
